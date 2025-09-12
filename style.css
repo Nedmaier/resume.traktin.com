@@ -1,0 +1,315 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --accent-color: #e3e3e3;
+  --button-bg-hover: #000;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #eeeeee;
+  --accent-color: #606060;
+  --button-bg-hover: #9b0000;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+  scroll-behavior: smooth;
+  line-height: 1.5;  /* увеличиваем межстрочный интервал */
+   letter-spacing: 0.3px;  /* расстояние между буквами */
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--accent-color);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-color);
+  z-index: 10;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.avatar {
+  width: 60px;                /* или нужный размер */
+  height: 60px;               /* чтобы получилось строго квадратное */
+  border-radius: 50%;         /* делает круг */
+  border: 2px solid var(--accent-color); /* рамка 2px */
+  object-fit: cover;          /* обрезает, если не квадратная картинка */
+  display: block;
+}
+
+h1 {
+  margin: 0;
+}
+
+.contact {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.controls button {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--text-color);
+  font-weight: normal;
+  transition: all 0.3s;
+}
+
+.controls button:hover {
+  background-color: var(--button-bg-hover);
+  color: #fff;
+}
+
+#theme-toggle {
+  background: none;
+  font-size: 11px;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  margin-bottom: 3.5rem;
+  scroll-margin-top: 80px;
+  opacity: 1;
+  transition: opacity 0.5s; 
+}
+
+h2 {
+  border-left: 3px solid #f00000;
+  padding-left: 0.5rem;
+}
+
+h3 {
+  padding-top: 1px;
+  margin-top: 0px;
+}
+
+.job {
+  padding: 1rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+ul {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+li::before {
+  content: "•";
+  color: #f00000;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+.fade {
+  opacity: 0;
+}
+
+@media print {
+  header, .controls, #download-pdf, #theme-toggle, #lang-toggle {
+    display: none !important;
+  }
+
+  html, body { background:#fff !important; }
+
+  * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .icon.dark { display: none !important; }
+  .icon.light { display: inline-block !important; }
+
+  h2 { border-left-color:#000 !important; }
+  li::before { color:#000 !important; }
+
+  body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
+
+/* === Контакты === */
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+/* Telegram */
+.tg-icon {
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+[data-theme="light"] .tg-icon.light.normal { display: inline-block; }
+[data-theme="light"] .telegram-link-wrapper:hover .tg-icon.light.normal { display: none; }
+[data-theme="light"] .telegram-link-wrapper:hover .tg-icon.light.hover  { display: inline-block; }
+
+[data-theme="dark"] .tg-icon.dark.normal { display: inline-block; }
+[data-theme="dark"] .telegram-link-wrapper:hover .tg-icon.dark.normal { display: none; }
+[data-theme="dark"] .telegram-link-wrapper:hover .tg-icon.dark.hover  { display: inline-block; }
+
+/* Ссылка Telegram */
+.telegram-link-wrapper a {
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 2px 8px 2px 0px;
+  transition: all 0.2s ease;
+}
+
+.telegram-link-wrapper a:hover {
+  color: #0088cc;
+  text-decoration: none;
+}
+
+/* === Переключатель темы === */
+.theme-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.theme-icon {
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+[data-theme="light"] .theme-icon.light.normal { display: inline-block; }
+[data-theme="light"] .theme-btn:hover .theme-icon.light.normal { display: none; }
+[data-theme="light"] .theme-btn:hover .theme-icon.light.hover  { display: inline-block; }
+
+[data-theme="dark"] .theme-icon.dark.normal { display: inline-block; }
+[data-theme="dark"] .theme-btn:hover .theme-icon.dark.normal { display: none; }
+[data-theme="dark"] .theme-btn:hover .theme-icon.dark.hover  { display: inline-block; }
+
+/* === Почтовая иконка === */
+.mail-icon {
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+[data-theme="light"] .mail-icon.light.normal { display: inline-block; }
+[data-theme="light"] .contact-item:hover .mail-icon.light.normal { display: none; }
+[data-theme="light"] .contact-item:hover .mail-icon.light.hover  { display: inline-block; }
+
+[data-theme="dark"] .mail-icon.dark.normal { display: inline-block; }
+[data-theme="dark"] .contact-item:hover .mail-icon.dark.normal { display: none; }
+[data-theme="dark"] .contact-item:hover .mail-icon.dark.hover  { display: inline-block; }
+
+/* Общий стиль для ссылок */
+.contact a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+[data-theme="light"] .contact a:hover {
+  color: #555;
+}
+
+[data-theme="dark"] .contact a:hover {
+  color: #ccc;
+}
+footer {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border-top: 1px solid var(--accent-color);
+  text-align: left;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;      /* не даём детям ломаться на строки */
+}
+
+/* зелёная точка */
+.status .dot {
+	flex-shrink: 0;         /* не уменьшаем при сжатии */
+  width: 10px;
+  height: 10px;
+  min-width: 10px;        /* фиксируем */
+  min-height: 10px;
+  border-radius: 50%;
+  background-color: #00cc44;
+  animation: pulse 2s infinite;
+}
+
+/* анимация мерцания */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+.avatar {
+  width: 60px;
+  height: auto;
+  border: 0;
+  opacity: 1;
+  transition: opacity 0.8s ease; /* плавное появление */
+}
+
+.avatar.hidden {
+  opacity: 0; /* изначально скрыта */
+}
+
+/* === Адаптив для мобильных устройств === */
+@media (max-width: 600px) {
+  .controls {
+    display: flex;
+    justify-content: center;  /* центрируем кнопки */
+    flex-wrap: wrap;          /* если не помещаются — переносим */
+    gap: 1px;                 /* зазор между кнопками */
+    width: 100%;
+    margin-top: 10px;
+  }
+}
