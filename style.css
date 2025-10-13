@@ -19,7 +19,7 @@ body {
   color: var(--text-color);
   transition: background-color 0.3s, color 0.3s;
   scroll-behavior: smooth;
-  line-height: 1.5;  /* увеличиваем межстрочный интервал */
+  line-height: 1.5;  /* увеличиваем межстрочный интервал 1*/
    letter-spacing: 0.3px;  /* расстояние между буквами */
 }
 

@@ -7,7 +7,7 @@ const toggleFade = (elements, callback) => {
   }, 500);
 };
 
-// === переключение языка ===
+// === переключение языка ====
 const setLanguage = (lang) => {
   const all = document.querySelectorAll('[data-ru]');
   toggleFade(all, () => {
