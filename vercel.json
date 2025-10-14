@@ -1,9 +1,0 @@
-{
-  "cleanUrls": true,
-  "trailingSlash": true,
-  "rewrites": [
-    { "source": "^/(en|ru)/?$", "destination": "/index.html" },
-    { "source": "^/(en|ru)/(.*)$", "destination": "/index.html" },
-    { "source": "^(?!/api)(.*)$", "destination": "/index.html" }
-  ]
-}
