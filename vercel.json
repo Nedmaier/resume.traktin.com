@@ -1,6 +1,6 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
+  "cleanUrls": false,
+  "trailingSlash": true,
   "rewrites": [
     { "source": "/en/", "destination": "/index.html" },
     { "source": "/ru/", "destination": "/index.html" },
