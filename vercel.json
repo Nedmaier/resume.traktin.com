@@ -1,5 +1,9 @@
 {
+  "cleanUrls": true,
+  "trailingSlash": false,
   "rewrites": [
+    { "source": "/en/", "destination": "/index.html" },
+    { "source": "/ru/", "destination": "/index.html" },
     { "source": "/:path*", "destination": "/index.html" }
   ]
 }
