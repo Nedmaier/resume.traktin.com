@@ -65,7 +65,17 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 
 document.getElementById('lang-toggle').addEventListener('click', () => {
   const isRU = document.documentElement.lang === 'ru';
-  setLanguage(isRU ? 'en' : 'ru');
+  const newLang = isRU ? 'en' : 'ru';
+  setLanguage(newLang); // мгновенно обновляем текст
+  
+  // Через короткую паузу меняем URL, чтобы можно было делиться ссылкой
+  setTimeout(() => {
+    const base = window.location.origin;
+    const newURL = `${base}/${newLang}/`;
+    if (window.location.href !== newURL) {
+      window.history.replaceState({}, '', newURL);
+    }
+  }, 300);
 });
 
 document.getElementById('download-pdf').addEventListener('click', () => {
