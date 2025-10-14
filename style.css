@@ -104,6 +104,46 @@ h2 {
 h3 {
   padding-top: 1px;
   margin-top: 0px;
+  padding-left: 13px;
+  margin-bottom: 8px;
+}
+h4 {
+  margin-top: 0px;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-bottom: 0px;
+  font-weight: 400;
+  font-size: 1.1rem;
+  padding-left: 14px;
+}
+.projects-link { 
+  padding-left:10px;
+  font-size: 0.95em; 
+  padding-bottom:5px;
+}
+
+/* убираем подчёркивание со всей ссылки */
+.ext-link { 
+  text-decoration: none; 
+  color: #989898;
+  font-weight: 500;
+}
+
+.ext-link :hover { 
+  text-decoration: none; 
+  color: #f44;
+  
+}
+/* подчёркиваем только текст */
+.ext-label { 
+  text-decoration: underline dotted; 
+  text-underline-offset: 2px; 
+}
+
+/* стрелка без подчёркивания */
+.ext-arrow { 
+  display: inline-block; 
+  margin-left: 2px; 
 }
 
 .job {
@@ -111,6 +151,16 @@ h3 {
   border: 1px solid var(--accent-color);
   border-radius: 8px;
   margin-bottom: 1rem;
+}
+.job2 {
+  padding: 1rem;
+  padding-left: 2.3rem;
+  padding-top: 0.7rem;
+}
+
+p.info_project {
+padding-top:1px;	
+margin-top:1px;
 }
 
 ul {
@@ -130,6 +180,10 @@ li::before {
 
 li {
   margin-bottom: 0.5rem;
+}
+
+span.relation {
+font-style:italic;	
 }
 
 .fade {

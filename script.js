@@ -47,7 +47,7 @@ function updateResumeStatus() {
   const now = new Date();
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
-  const ruText = `Резюме актуально на ${now.toLocaleDateString("ru-RU", options)}. Заинтересован в полной занятости. Формат работы: удаленно.`;
+  const ruText = `Резюме актуально на ${now.toLocaleDateString("ru-RU", options)}. Заинтересован в полной или частичной занятости. Формат работы: удаленно.`;
   const enText = `Resume is up-to-date as of ${now.toLocaleDateString("en-US", options)}. Open to full-time opportunities. Remote work preferred.`;
 
   const statusEl = document.getElementById('resume-status');
