@@ -2,11 +2,9 @@
   "cleanUrls": false,
   "trailingSlash": true,
   "rewrites": [
-    { "source": "/(en|ru)/", "destination": "/index.html" },
-    { "source": "/(en|ru)", "destination": "/index.html" },
-    {
-      "source": "/((?!media/|style\\.css|script\\.js|favicon\\.ico).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/en",  "destination": "/index.html" },
+    { "source": "/en/", "destination": "/index.html" },
+    { "source": "/ru",  "destination": "/index.html" },
+    { "source": "/ru/", "destination": "/index.html" }
   ]
 }

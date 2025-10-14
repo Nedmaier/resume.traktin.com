@@ -5,6 +5,13 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title data-en="Resume Pavel Traktin" data-ru="Резюме Трактин Павел">Резюме - Трактин Павел</title>
+<!-- базовый путь: локально ./, на проде / -->
+  <base id="base-href" href="./">
+  <script>
+    if (location.protocol === 'http:' || location.protocol === 'https:') {
+      document.getElementById('base-href').setAttribute('href', '/');
+    }
+  </script>
 <link href="style.css" rel="stylesheet"/>
 </head>
 <body data-theme="light">
