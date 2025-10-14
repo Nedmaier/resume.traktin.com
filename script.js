@@ -85,26 +85,30 @@ window.addEventListener('DOMContentLoaded', () => {
   const savedLang = localStorage.getItem('lang');
   const savedTheme = localStorage.getItem('theme') || 'light';
 
-  const path = window.location.pathname.toLowerCase();
-  if (path.includes('/en')) {
-    setLanguage('en');
-  } else if (path.includes('/ru')) {
-    setLanguage('ru');
+  // Универсальный детектор языка из URL
+  const urlLang = (() => {
+    const segments = window.location.pathname.toLowerCase().split('/').filter(Boolean);
+    if (segments.includes('en')) return 'en';
+    if (segments.includes('ru')) return 'ru';
+    return null;
+  })();
+
+  // Приоритет: URL → localStorage → по умолчанию
+  if (urlLang) {
+    setLanguage(urlLang);
   } else if (savedLang) {
     setLanguage(savedLang);
   } else {
-    setLanguage('ru'); // дефолт
+    setLanguage('ru');
   }
 
   setTheme(savedTheme);
-
-  // статус инициализация
   updateResumeStatus();
 
-  // аватар плавное появление
   const avatar = document.getElementById('avatar');
   if (avatar) {
     avatar.addEventListener('load', () => avatar.classList.remove('hidden'));
     if (avatar.complete) avatar.classList.remove('hidden');
   }
 });
+
