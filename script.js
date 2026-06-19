@@ -1,119 +1,154 @@
-// === fade анимация ===
+const LANGUAGE_SETTINGS = {
+  ru: { label: 'RU', locale: 'ru-RU', direction: 'ltr' },
+  en: { label: 'EN', locale: 'en-US', direction: 'ltr' },
+  he: { label: 'HE', locale: 'he-IL', direction: 'rtl' }
+};
+
+// Add "he" here after locales/he.json is translated and published.
+const ACTIVE_LANGUAGES = ['ru', 'en'];
+const translationCache = new Map();
+let currentTranslations = {};
+
 const toggleFade = (elements, callback) => {
-  elements.forEach(el => el.classList.add('fade'));
+  elements.forEach(element => element.classList.add('fade'));
   setTimeout(() => {
     callback();
-    elements.forEach(el => el.classList.remove('fade'));
-  }, 500);
+    elements.forEach(element => element.classList.remove('fade'));
+  }, 300);
 };
 
-// === переключение языка ====
-const setLanguage = (lang) => {
-  const all = document.querySelectorAll('[data-ru]');
-  toggleFade(all, () => {
-    document.documentElement.lang = lang;
-    all.forEach(el => {
-      el.textContent = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-ru');
+const getLanguageFromUrl = () => {
+  const segments = window.location.pathname.toLowerCase().split('/').filter(Boolean);
+  return ACTIVE_LANGUAGES.find(language => segments.includes(language)) || null;
+};
+
+const loadTranslations = async language => {
+  if (translationCache.has(language)) {
+    return translationCache.get(language);
+  }
+
+  const response = await fetch(new URL(`locales/${language}.json`, document.baseURI));
+  if (!response.ok) {
+    throw new Error(`Unable to load locale: ${language}`);
+  }
+
+  const translations = await response.json();
+  translationCache.set(language, translations);
+  return translations;
+};
+
+const updateLanguageButton = language => {
+  const currentIndex = ACTIVE_LANGUAGES.indexOf(language);
+  const nextLanguage = ACTIVE_LANGUAGES[(currentIndex + 1) % ACTIVE_LANGUAGES.length];
+  const button = document.getElementById('lang-toggle');
+  button.textContent = LANGUAGE_SETTINGS[nextLanguage].label;
+  button.dataset.nextLanguage = nextLanguage;
+};
+
+const updateThemeButtonTitle = () => {
+  const currentTheme = document.body.getAttribute('data-theme') || 'light';
+  const key = currentTheme === 'light' ? 'ui.themeToDark' : 'ui.themeToLight';
+  document.getElementById('theme-toggle').title = currentTranslations[key] || '';
+};
+
+const updateResumeStatus = language => {
+  const status = document.getElementById('resume-status');
+  const template = currentTranslations['status.template'];
+  if (!status || !template) return;
+
+  const date = new Date().toLocaleDateString(
+    LANGUAGE_SETTINGS[language].locale,
+    { year: 'numeric', month: 'long', day: 'numeric' }
+  );
+
+  status.textContent = template.replace('{date}', date);
+};
+
+const applyTranslations = (language, translations) => {
+  const elements = [...document.querySelectorAll('[data-i18n]')];
+  const isInitialLoad = document.documentElement.classList.contains('i18n-loading');
+
+  const render = () => {
+    elements.forEach(element => {
+      const key = element.dataset.i18n;
+      if (Object.prototype.hasOwnProperty.call(translations, key)) {
+        element.textContent = translations[key];
+      }
     });
-    document.getElementById('lang-toggle').textContent = lang === 'en' ? 'RU' : 'EN';
-    localStorage.setItem('lang', lang);
-    updateThemeButtonTitle();
-    updateResumeStatus();
-  });
+  };
+
+  if (isInitialLoad) {
+    render();
+  } else {
+    toggleFade(elements, render);
+  }
+
+  const settings = LANGUAGE_SETTINGS[language];
+  document.documentElement.lang = language;
+  document.documentElement.dir = settings.direction;
+  currentTranslations = translations;
+  localStorage.setItem('lang', language);
+  updateLanguageButton(language);
+  updateThemeButtonTitle();
+  updateResumeStatus(language);
+  document.documentElement.classList.remove('i18n-loading');
 };
 
-// === переключение темы ===
-const setTheme = (theme) => {
+const setLanguage = async (language, updateUrl = true) => {
+  const targetLanguage = ACTIVE_LANGUAGES.includes(language) ? language : 'ru';
+
+  try {
+    const translations = await loadTranslations(targetLanguage);
+    applyTranslations(targetLanguage, translations);
+
+    if (updateUrl && window.location.protocol !== 'file:') {
+      const newUrl = `${window.location.origin}/${targetLanguage}/`;
+      if (window.location.href !== newUrl) {
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    document.documentElement.classList.remove('i18n-loading');
+  }
+};
+
+const setTheme = theme => {
   document.body.setAttribute('data-theme', theme);
   localStorage.setItem('theme', theme);
   updateThemeButtonTitle();
 };
 
-// === заголовок у переключателя темы ===
-const updateThemeButtonTitle = () => {
-  const lang = document.documentElement.lang || 'ru';
-  const currentTheme = document.body.getAttribute('data-theme') || 'light';
-  const button = document.getElementById('theme-toggle');
-
-  if (currentTheme === 'light') {
-    button.title = lang === 'en' ? 'Switch to dark theme' : 'Переключить на тёмную тему';
-  } else {
-    button.title = lang === 'en' ? 'Switch to light theme' : 'Переключить на светлую тему';
-  }
-};
-
-// === резюме статус ===
-function updateResumeStatus() {
-  const now = new Date();
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-
-  const ruText = `Резюме актуально на ${now.toLocaleDateString("ru-RU", options)}. Заинтересован в полной или частичной занятости. Формат работы: удаленно.`;
-  const enText = `Resume is up-to-date as of ${now.toLocaleDateString("en-US", options)}. Open to full-time opportunities. Remote work preferred.`;
-
-  const statusEl = document.getElementById('resume-status');
-  if (!statusEl) return;
-  const lang = document.documentElement.lang;
-  statusEl.textContent = lang === 'en' ? enText : ruText;
-}
-
-// === обработчики ===
 document.getElementById('theme-toggle').addEventListener('click', () => {
   const currentTheme = document.body.getAttribute('data-theme');
-  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  setTheme(newTheme);
+  setTheme(currentTheme === 'light' ? 'dark' : 'light');
 });
 
-document.getElementById('lang-toggle').addEventListener('click', () => {
-  const isRU = document.documentElement.lang === 'ru';
-  const newLang = isRU ? 'en' : 'ru';
-  setLanguage(newLang); // мгновенно обновляем текст
-  
-  // Через короткую паузу меняем URL, чтобы можно было делиться ссылкой
-  setTimeout(() => {
-    const base = window.location.origin;
-    const newURL = `${base}/${newLang}/`;
-    if (window.location.href !== newURL) {
-      window.history.replaceState({}, '', newURL);
-    }
-  }, 300);
+document.getElementById('lang-toggle').addEventListener('click', event => {
+  setLanguage(event.currentTarget.dataset.nextLanguage);
 });
 
 document.getElementById('download-pdf').addEventListener('click', () => {
   const element = document.querySelector('main');
-  const opt = {
+  const options = {
     margin: 0.5,
-    filename: 'Resume_Pavel_Traktin.pdf',
+    filename: currentTranslations['pdf.filename'] || 'Resume_Pavel_Traktin.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
-  html2pdf().set(opt).from(element).save();
+
+  html2pdf().set(options).from(element).save();
 });
 
-// === при загрузке страницы ===
-window.addEventListener('DOMContentLoaded', () => {
-  const savedLang = localStorage.getItem('lang');
+window.addEventListener('DOMContentLoaded', async () => {
+  const savedLanguage = localStorage.getItem('lang');
+  const initialLanguage = getLanguageFromUrl()
+    || (ACTIVE_LANGUAGES.includes(savedLanguage) ? savedLanguage : 'ru');
   const savedTheme = localStorage.getItem('theme') || 'light';
 
-  // Универсальный детектор языка из URL
-  const urlLang = (() => {
-    const segments = window.location.pathname.toLowerCase().split('/').filter(Boolean);
-    if (segments.includes('en')) return 'en';
-    if (segments.includes('ru')) return 'ru';
-    return null;
-  })();
-
-  // Приоритет: URL → localStorage → по умолчанию
-  if (urlLang) {
-    setLanguage(urlLang);
-  } else if (savedLang) {
-    setLanguage(savedLang);
-  } else {
-    setLanguage('ru');
-  }
-
   setTheme(savedTheme);
-  updateResumeStatus();
+  await setLanguage(initialLanguage, false);
 
   const avatar = document.getElementById('avatar');
   if (avatar) {
@@ -121,4 +156,3 @@ window.addEventListener('DOMContentLoaded', () => {
     if (avatar.complete) avatar.classList.remove('hidden');
   }
 });
-
