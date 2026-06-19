@@ -3,10 +3,10 @@
 The page markup contains translation keys in `data-i18n` attributes. Each
 locale JSON file must contain the same keys.
 
-To add Hebrew:
+Hebrew is configured as `he-IL` with right-to-left (`rtl`) direction.
 
-1. Copy `en.json` to `he.json` and translate every value.
-2. Add `he` to `ACTIVE_LANGUAGES` in `script.js`.
-3. Add `/he` and `/he/` rewrites to `vercel.json`.
+To add another language:
 
-Hebrew is already configured as `he-IL` with right-to-left (`rtl`) direction.
+1. Copy `en.json` to a new locale file and translate every value.
+2. Add the language settings and code to `script.js`.
+3. Add matching rewrites to `vercel.json`.

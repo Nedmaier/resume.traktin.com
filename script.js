@@ -4,8 +4,7 @@ const LANGUAGE_SETTINGS = {
   he: { label: 'HE', locale: 'he-IL', direction: 'rtl' }
 };
 
-// Add "he" here after locales/he.json is translated and published.
-const ACTIVE_LANGUAGES = ['ru', 'en'];
+const ACTIVE_LANGUAGES = ['ru', 'en', 'he'];
 const translationCache = new Map();
 let currentTranslations = {};
 
@@ -37,12 +36,31 @@ const loadTranslations = async language => {
   return translations;
 };
 
-const updateLanguageButton = language => {
-  const currentIndex = ACTIVE_LANGUAGES.indexOf(language);
-  const nextLanguage = ACTIVE_LANGUAGES[(currentIndex + 1) % ACTIVE_LANGUAGES.length];
+const closeLanguageMenu = () => {
   const button = document.getElementById('lang-toggle');
-  button.textContent = LANGUAGE_SETTINGS[nextLanguage].label;
-  button.dataset.nextLanguage = nextLanguage;
+  const menu = document.getElementById('language-menu');
+  button.setAttribute('aria-expanded', 'false');
+  menu.classList.remove('open');
+};
+
+const updateLanguageSelector = language => {
+  const menu = document.getElementById('language-menu');
+  document.getElementById('current-language').textContent = LANGUAGE_SETTINGS[language].label;
+  menu.replaceChildren();
+
+  ACTIVE_LANGUAGES
+    .filter(item => item !== language)
+    .forEach(item => {
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'language-option';
+      option.dataset.language = item;
+      option.setAttribute('role', 'menuitem');
+      option.textContent = LANGUAGE_SETTINGS[item].label;
+      menu.appendChild(option);
+    });
+
+  closeLanguageMenu();
 };
 
 const updateThemeButtonTitle = () => {
@@ -88,7 +106,7 @@ const applyTranslations = (language, translations) => {
   document.documentElement.dir = settings.direction;
   currentTranslations = translations;
   localStorage.setItem('lang', language);
-  updateLanguageButton(language);
+  updateLanguageSelector(language);
   updateThemeButtonTitle();
   updateResumeStatus(language);
   document.documentElement.classList.remove('i18n-loading');
@@ -125,7 +143,32 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
 });
 
 document.getElementById('lang-toggle').addEventListener('click', event => {
-  setLanguage(event.currentTarget.dataset.nextLanguage);
+  const button = event.currentTarget;
+  const menu = document.getElementById('language-menu');
+  const shouldOpen = button.getAttribute('aria-expanded') !== 'true';
+
+  button.setAttribute('aria-expanded', String(shouldOpen));
+  menu.classList.toggle('open', shouldOpen);
+});
+
+document.getElementById('language-menu').addEventListener('click', event => {
+  const option = event.target.closest('[data-language]');
+  if (option) {
+    setLanguage(option.dataset.language);
+  }
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.language-selector')) {
+    closeLanguageMenu();
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    closeLanguageMenu();
+    document.getElementById('lang-toggle').focus();
+  }
 });
 
 document.getElementById('download-pdf').addEventListener('click', () => {

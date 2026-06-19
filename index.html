@@ -55,7 +55,13 @@
 </div>
 <div class="controls">
 <button id="download-pdf" data-i18n="ui.downloadPdf"></button>
-<button aria-label="Switch language" id="lang-toggle">EN</button>
+<div class="language-selector">
+<button aria-expanded="false" aria-haspopup="true" aria-label="Choose language" id="lang-toggle" type="button">
+<span id="current-language">RU</span>
+<span aria-hidden="true" class="language-arrow">▾</span>
+</button>
+<div class="language-menu" id="language-menu" role="menu"></div>
+</div>
 <button class="theme-btn" id="theme-toggle" title="">
 <!-- Светлая тема -->
 <img alt="Light theme" class="theme-icon light normal" src="media/sun_outline_black_16x16.svg"/>

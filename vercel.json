@@ -5,6 +5,8 @@
     { "source": "/en",  "destination": "/index.html" },
     { "source": "/en/", "destination": "/index.html" },
     { "source": "/ru",  "destination": "/index.html" },
-    { "source": "/ru/", "destination": "/index.html" }
+    { "source": "/ru/", "destination": "/index.html" },
+    { "source": "/he",  "destination": "/index.html" },
+    { "source": "/he/", "destination": "/index.html" }
   ]
 }

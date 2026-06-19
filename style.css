@@ -78,6 +78,57 @@ h1 {
   color: #fff;
 }
 
+.language-selector {
+  display: inline-block;
+  position: relative;
+  margin-left: 0.5rem;
+}
+
+.language-selector #lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 0;
+}
+
+.language-arrow {
+  font-size: 0.7em;
+  transition: transform 0.2s ease;
+}
+
+#lang-toggle[aria-expanded="true"] .language-arrow {
+  transform: rotate(180deg);
+}
+
+.language-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  padding: 4px;
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+  z-index: 20;
+}
+
+.language-menu.open {
+  display: grid;
+}
+
+.language-menu .language-option {
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+[dir="rtl"] .language-menu {
+  right: 0;
+  left: auto;
+}
+
 #theme-toggle {
   background: none;
   font-size: 11px;
@@ -422,10 +473,15 @@ footer {
 
 /* === Адаптив для мобильных устройств === */
 @media (max-width: 600px) {
+  header {
+    flex-wrap: wrap;
+  }
+
   .controls {
     display: flex;
     justify-content: center;  /* центрируем кнопки */
     flex-wrap: wrap;          /* если не помещаются — переносим */
+    flex: 1 1 100%;
     gap: 1px;                 /* зазор между кнопками */
     width: 100%;
     margin-top: 10px;
