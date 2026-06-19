@@ -422,6 +422,15 @@ footer {
   50% { opacity: 0.3; }
   100% { opacity: 1; }
 }
+.avatar-link {
+  width: 88px;
+  height: 88px;
+  border-radius: 19%;
+  overflow: hidden;
+  display: block;
+  flex-shrink: 0;
+}
+
 .avatar {
   width: 88px;
   height: 88px;
@@ -430,7 +439,15 @@ footer {
   object-fit: cover;
   object-position: 50% 24%;
   opacity: 1;
-  transition: opacity 0.8s ease; /* плавное появление */
+  transition: opacity 0.8s ease, transform 0.65s ease;
+  transform: scale(1);
+  transform-origin: 45% 40%;
+  will-change: transform;
+}
+
+.avatar-link:hover .avatar,
+.avatar-link:focus-visible .avatar {
+  transform: translateY(20%) scale(1.9);
 }
 
 .avatar.hidden {
