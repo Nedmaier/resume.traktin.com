@@ -294,6 +294,29 @@ font-style:italic;
 [data-theme="dark"] .contact-item:hover .mail-icon.dark.normal { display: none; }
 [data-theme="dark"] .contact-item:hover .mail-icon.dark.hover  { display: inline-block; }
 
+/* LinkedIn */
+.linkedin-icon {
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+.linkedin-link-wrapper {
+  margin-left: 3px;
+}
+
+[data-theme="light"] .linkedin-icon.light.normal { display: inline-block; }
+[data-theme="light"] .linkedin-link-wrapper:hover .linkedin-icon.light.normal { display: none; }
+[data-theme="light"] .linkedin-link-wrapper:hover .linkedin-icon.light.hover { display: inline-block; }
+
+[data-theme="dark"] .linkedin-icon.dark.normal { display: inline-block; }
+[data-theme="dark"] .linkedin-link-wrapper:hover .linkedin-icon.dark.normal { display: none; }
+[data-theme="dark"] .linkedin-link-wrapper:hover .linkedin-icon.dark.hover { display: inline-block; }
+
+.linkedin-link-wrapper a:hover {
+  color: #0a66c2;
+}
+
 /* Общий стиль для ссылок */
 .contact a {
   color: var(--text-color);
